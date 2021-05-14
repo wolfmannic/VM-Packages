@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>python2.x86.fireeye</id>
+    <version>2.7.15</version>
+    <title>Python 2.7</title>
+    <authors>Author_TBD</authors>
+    <licenseUrl>https://www.python.org/download/releases/2.7/license</licenseUrl>
+    <projectUrl>http://www.python.org/</projectUrl>
+    <projectSourceUrl>https://www.python.org/downloads/source</projectSourceUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Python 2.7 is a programming language that lets you work more quickly and integrate your systems more effectively.</description>
+    <summary>Installs the x86 version of Python 2.7.</summary>
+    <tags>python programming development</tags>
+    <dependencies>
+      <dependency id="common.fireeye" />
+    </dependencies>
+  </metadata>
+</package>
