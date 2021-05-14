@@ -12,3 +12,4 @@ FE-Assert-Path $target
 
 $shortcut = Join-Path $path 'Microsoft Visual C++ Build Tools.lnk'
 Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target
+FE-Assert-Path $shortcut

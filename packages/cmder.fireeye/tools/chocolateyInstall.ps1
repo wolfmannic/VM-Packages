@@ -33,3 +33,4 @@ FE-Assert-Path $target_file
 
 $shortcut = Join-Path $path 'cmder.lnk'
 Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $target_file
+FE-Assert-Path $shortcut
