@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>vcbuildtools.fireeye</id>
-    <version>0.0.0.20210512</version>
+    <version>0.0.0.20210603</version>
     <title>Microsoft Visual C++ Build Tools 2017</title>
     <authors>Author_TBD</authors>
     <licenseUrl>License_TBD</licenseUrl>

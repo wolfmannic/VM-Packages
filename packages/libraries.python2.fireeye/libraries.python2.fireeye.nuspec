@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
-    <id>cmder.fireeye</id>
+    <id>libraries.python2.fireeye</id>
     <version>0.0.0.20210603</version>
-    <title>Cmder</title>
+    <title>Python2 libraries</title>
     <authors>Author_TBD</authors>
     <licenseUrl>License_TBD</licenseUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Metapackage that requires the dependencies below:
-- cmder
+- vcbuildtools.fireeye
+- python2
+- python3
 </description>
-    <summary>Installs and adds shortcut to Cmder</summary>
-    <tags>cmder console terminal cli foss</tags>
+    <summary>Installs Python2 libraries via pip</summary>
     <dependencies>
       <dependency id="common.fireeye" />
-      <dependency id="cmder" />
+      <dependency id="vcbuildtools.fireeye" />
+      <dependency id="python2" />
+      <dependency id="python3" version="[3.7.0, 3.8.0)" />
     </dependencies>
   </metadata>
 </package>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>x64dbg.fireeye</id>
+    <version>2021.05.08</version>
+    <title>x64dbg</title>
+    <authors>mrexodia</authors>
+    <licenseUrl>https://github.com/x64dbg/x64dbg/blob/development/LICENSE</licenseUrl>
+    <projectUrl>http://x64dbg.com</projectUrl>
+    <docsUrl>https://github.com/x64dbg/x64dbg/wiki</docsUrl>
+    <iconUrl>https://github.com/x64dbg/x64dbg/blob/development/src/bug_black.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <tags>reverse engineering debugger disassembler binary analysis</tags>
+    <description>An open-source x64/x32 debugger for Windows.
+Features:
+- Open-source
+- Intuitive and familiar, yet new user interface
+- C-like expression parser
+- Full-featured debugging of DLL and EXE files (TitanEngine)
+- IDA-like sidebar with jump arrows
+- IDA-like instruction token highlighter (highlight registers, etc.)
+- Memory map
+- Symbol view
+- Thread view
+- Source code view
+- Content-sensitive register view
+- Fully customizable color scheme
+- Dynamically recognize modules and strings
+- Import reconstructor integrated (Scylla)
+- Fast disassembler (Capstone)
+- User database (JSON) for comments, labels, bookmarks, etc.
+- Plugin support with growing API
+- Extendable, debuggable scripting language for automation
+- Multi-datatype memory dump
+- Basic debug symbol (PDB) support
+- Dynamic stack view
+- Built-in assembler (XEDParse/Keystone/asmjit)
+- Executable patching
+- Yara Pattern Matching
+- Decompiler (Snowman)
+- Analysis
+</description>
+    <dependencies>
+      <dependency id="common.fireeye" />
+    </dependencies>
+  </metadata>
+</package>

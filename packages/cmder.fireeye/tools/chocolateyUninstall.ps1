@@ -1,4 +1,4 @@
 $ErrorActionPreference = 'Stop'
-$path = Join-Path ${Env:TOOL_LIST_DIR} 'Utilities'
-$shortcut = Join-Path $path 'cmder.lnk'
+$shortcutDir = Join-Path ${Env:TOOL_LIST_DIR} 'Utilities'
+$shortcut = Join-Path $shortcutDir 'cmder.lnk'
 Remove-Item $shortcut -Force -ea 0 | Out-Null
