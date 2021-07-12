@@ -1,0 +1,27 @@
+{
+  "packages": [
+    {"name": "hexdump"},
+    {"name": "pefile"},
+    {"name": "winappdbg"},
+    {"name": "pycryptodome"},
+    {
+      "name":"vivisect",
+      "url": "https://github.com/williballenthin/vivisect/zipball/master"
+    },
+    {"name": "capstone-windows"},
+    {"name": "unicorn"},
+    {"name": "oletools"},
+    {"name": "olefile"}, 
+    {"name": "unpy2exe"},
+    {"name": "pyftpdlib"},
+    {"name": "pyasn1"},
+    {"name": "pyOpenSSL"},
+    {"name": "ldapdomaindump"},
+    {"name": "pyreadline"},
+    {"name": "flask"},
+    {"name": "networkx"},
+    {"name": "uncompyle6"},
+    {"name": "requests"},
+    {"name": "msoffcrypto-tool"}
+  ]
+}

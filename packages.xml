@@ -1,0 +1,15 @@
+<Packages>
+    <Package name="common.fireeye" />
+    <Package name="vcbuildtools.fireeye" />
+    <Package name="cmder.fireeye" />
+    <Package name="python2.x86.fireeye" />
+    <Package name="libraries.python2.fireeye" />
+    <Package name="libraries.python3.fireeye" />
+    <Package name="ollydbg.fireeye" />
+    <Package name="ollydbg.ollydumpex.fireeye" />
+    <Package name="ollydbg2.fireeye" />
+    <Package name="ollydbg2.ollydumpex.fireeye" />
+    <Package name="x64dbg.fireeye" />
+    <Package name="x64dbg.ollydumpex.fireeye" />
+    <Package name="x64dbgpy.fireeye" />
+</Packages>

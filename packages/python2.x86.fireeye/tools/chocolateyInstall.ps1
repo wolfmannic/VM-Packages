@@ -11,7 +11,6 @@ $params = @{
   url            = 'https://www.python.org/ftp/python/2.7.15/python-2.7.15.msi'
   checksum       = '1AFA1B10CF491C788BAA340066A813D5EC6232561472CFC3AF1664DBC6F29F77'
   checksumType   = 'sha256'
-  checksumType64 = 'sha256'
 }
 Install-ChocolateyPackage @params
 FE-Assert-Path $installDir
