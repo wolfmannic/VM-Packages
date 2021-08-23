@@ -383,3 +383,75 @@ function FE-New-Install-Log {
   $(Get-Date -f o) | Out-File -FilePath $outputFile -Append
   return $outputFile
 }
+
+function FE-Install-From-Zip {
+    Param
+    (
+         [Parameter(Mandatory=$true, Position=0)]
+         [string] $toolName,
+         [Parameter(Mandatory=$true, Position=1)]
+         [string] $category,
+         [Parameter(Mandatory=$true, Position=2)]
+         [string] $zipUrl,
+         [Parameter(Mandatory=$true, Position=3)]
+         [string] $zipSha256
+    )
+  try {
+    $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
+    $shortcutDir = Join-Path ${Env:TOOL_LIST_DIR} $category
+
+    # Remove files from previous zips for upgrade
+    FE-Remove-PreviousZipPackage ${Env:chocolateyPackageFolder}
+
+    # Download and unzip
+    $packageArgs = @{
+      packageName   = ${Env:ChocolateyPackageName}
+      unzipLocation = $toolDir
+      url           = $zipUrl
+      checksum      = $zipSha256
+      checksumType  = 'sha256'
+    }
+
+    Install-ChocolateyZipPackage @packageArgs
+
+    $executablePath = Join-Path $toolDir "$toolName.exe"
+    FE-Assert-Path (Join-Path $toolDir "$toolName.exe")
+
+    $executableCmd  = Join-Path ${Env:WinDir} "system32\cmd.exe"
+    $executableDir  = Join-Path ${Env:UserProfile} "Desktop"
+    $executableArgs = "/K `"cd ${executableDir} && $toolName --help`""
+
+    $shortcut = Join-Path $shortcutDir "$toolName.lnk"
+    Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executableCmd -Arguments $executableArgs -WorkingDirectory $executableDir -IconLocation $executablePath
+    FE-Assert-Path $shortcut
+
+    Install-BinFile -Name $toolName -Path $executablePath
+  } catch {
+    $msg = $_.Exception.Message
+    $line = $_.InvocationInfo.ScriptLineNumber
+    FE-Write-Log "ERROR" "[Err:$line] $msg"
+    throw
+  }
+}
+
+function FE-Uninstall {
+    Param
+    (
+         [Parameter(Mandatory=$true, Position=0)]
+         [string] $toolName,
+         [Parameter(Mandatory=$true, Position=1)]
+         [string] $category
+    )
+  $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
+  $shortcutDir = Join-Path ${Env:TOOL_LIST_DIR} $category
+
+  # Remove tool files
+  Remove-Item $toolDir -Recurse -Force -ea 0 | Out-Null
+
+  # Remove shortcut file
+  $shortcut = Join-Path $shortcutDir "$toolName.lnk"
+  Remove-Item $shortcut -Force -ea 0 | Out-Null
+
+  # Uninstall binary
+  Uninstall-BinFile -Name $toolName
+}
