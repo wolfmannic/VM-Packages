@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} 'OllyDbg2'
 FE-Assert-Path $toolDir
 

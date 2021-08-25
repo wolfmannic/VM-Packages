@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 $toolName = 'OllyDbg2'
 
 $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName

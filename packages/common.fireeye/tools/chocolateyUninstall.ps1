@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 
 $commonDirPath = [Environment]::GetEnvironmentVariable("VM_COMMON_DIR", 'Machine')
 
