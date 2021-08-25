@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>fakenet-ng.fireeye</id>
+    <version>1.4.11</version>
+    <title>FakeNet-NG</title>
+    <authors>FireEye</authors>
+    <projectUrl>https://github.com/fireeye/flare-fakenet-ng</projectUrl>
+    <licenseUrl>https://github.com/fireeye/flare-fakenet-ng/blob/master/LICENSE.txt</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>FakeNet-NG is a next generation dynamic network analysis tool for malware analysts and penetration testers. It is open source and designed for the latest versions of Windows.</description>
+    <tags>fake network http ftp tftp irc dns telnet pop smtp</tags>
+    <dependencies>
+      <dependency id="common.fireeye" />
+    </dependencies>
+  </metadata>
+</package>

@@ -5,7 +5,7 @@
     <version>3.0.1</version>
     <title>FireEye Common PowerShell Libraries</title>
     <authors>Author_TBD</authors>
-    <licenseUrl>License_TBD</licenseUrl>
+    <licenseUrl>https://github.com/fireeye/capa/blob/master/LICENSE.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Common libraries for FireEye VMs</description>
   </metadata>
