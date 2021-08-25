@@ -3,16 +3,12 @@
   <metadata>
     <id>libraries.python3.fireeye</id>
     <version>0.0.0.20210603</version>
-    <title>Python3 libraries</title>
-    <authors>Author_TBD</authors>
-    <licenseUrl>License_TBD</licenseUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>Metapackage that requires the dependencies below:
 - vcbuildtools.fireeye
 - python2
 - python3
 </description>
-    <summary>Installs Python2 libraries via pip</summary>
+    <authors>Author_TBD</authors>
     <dependencies>
       <dependency id="common.fireeye" />
       <dependency id="vcbuildtools.fireeye" />

@@ -3,14 +3,8 @@
   <metadata>
     <id>x64dbgpy.fireeye</id>
     <version>1.0.56</version>
-    <title>x64dbgpy</title>
-    <authors>mrexodia, RealGame (Tomer Zait)</authors>
-    <projectUrl>https://github.com/x64dbg/x64dbgpy</projectUrl>
-    <docsUrl>https://github.com/x64dbg/x64dbgpy/wiki</docsUrl>
-    <licenseUrl>https://github.com/x64dbg/x64dbgpy/blob/v25/LICENSE</licenseUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <tags>reverse engineering debugger disassembler binary analysis</tags>
     <description>Automating x64dbg using Python.</description>
+    <authors>mrexodia, RealGame (Tomer Zait)</authors>
     <dependencies>
       <dependency id="common.fireeye" />
       <dependency id="x64dbg.fireeye" />
