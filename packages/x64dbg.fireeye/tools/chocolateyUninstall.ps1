@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+$ErrorActionPreference = 'Continue'
 
 $toolName = 'x64dbg'
 $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
