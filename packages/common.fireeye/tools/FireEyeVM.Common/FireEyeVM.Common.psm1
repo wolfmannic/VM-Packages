@@ -394,7 +394,11 @@ function FE-Install-From-Zip {
          [Parameter(Mandatory=$true, Position=2)]
          [string] $zipUrl,
          [Parameter(Mandatory=$true, Position=3)]
-         [string] $zipSha256
+         [string] $zipSha256,
+         [Parameter(Mandatory=$false)]
+         [bool] $consoleApp=$false,
+         [Parameter(Mandatory=$false)]
+         [string] $zipFolder # subfolder in zip with the app files
     )
   try {
     $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
@@ -414,15 +418,23 @@ function FE-Install-From-Zip {
 
     Install-ChocolateyZipPackage @packageArgs
 
+    if ($zipFolder){
+      $toolDir = Join-Path $toolDir $zipFolder
+    }
+
     $executablePath = Join-Path $toolDir "$toolName.exe"
     FE-Assert-Path (Join-Path $toolDir "$toolName.exe")
-
-    $executableCmd  = Join-Path ${Env:WinDir} "system32\cmd.exe"
-    $executableDir  = Join-Path ${Env:UserProfile} "Desktop"
-    $executableArgs = "/K `"cd ${executableDir} && $toolName --help`""
-
     $shortcut = Join-Path $shortcutDir "$toolName.lnk"
-    Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executableCmd -Arguments $executableArgs -WorkingDirectory $executableDir -IconLocation $executablePath
+
+    if ($consoleApp) {
+      $executableCmd  = Join-Path ${Env:WinDir} "system32\cmd.exe"
+      $executableArgs = "/K `"cd ${executableDir} && $toolName --help`""
+      $executableDir  = Join-Path ${Env:UserProfile} "Desktop"
+      Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executableCmd -Arguments $executableArgs -WorkingDirectory $executableDir -IconLocation $executablePath
+    } else {
+      Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executablePath
+    }
+
     FE-Assert-Path $shortcut
 
     Install-BinFile -Name $toolName -Path $executablePath
