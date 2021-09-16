@@ -3,10 +3,7 @@
   <metadata>
     <id>common.fireeye</id>
     <version>3.0.1</version>
-    <title>FireEye Common PowerShell Libraries</title>
-    <authors>Author_TBD</authors>
-    <licenseUrl>https://github.com/fireeye/capa/blob/master/LICENSE.txt</licenseUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Common libraries for FireEye VMs</description>
+    <authors>Author_TBD</authors>
   </metadata>
 </package>
