@@ -384,6 +384,7 @@ function FE-New-Install-Log {
   return $outputFile
 }
 
+# This functions returns $executablePath and $toolDir (outputed by Install-ChocolateyZipPackage)
 function FE-Install-From-Zip {
     Param
     (
@@ -395,6 +396,10 @@ function FE-Install-From-Zip {
          [string] $zipUrl,
          [Parameter(Mandatory=$true, Position=3)]
          [string] $zipSha256,
+         [Parameter(Mandatory=$false, Position=4)]
+         [string] $zipUrl_64,
+         [Parameter(Mandatory=$false, Position=5)]
+         [string] $zipSha256_64,
          [Parameter(Mandatory=$false)]
          [bool] $consoleApp=$false,
          [Parameter(Mandatory=$false)]
@@ -413,6 +418,8 @@ function FE-Install-From-Zip {
       unzipLocation = $toolDir
       url           = $zipUrl
       checksum      = $zipSha256
+      url64bit      = $zipUrl_64
+      checksum64    = $zipSha256_64
       checksumType  = 'sha256'
     }
 
@@ -438,6 +445,8 @@ function FE-Install-From-Zip {
     FE-Assert-Path $shortcut
 
     Install-BinFile -Name $toolName -Path $executablePath
+
+    return $executablePath
   } catch {
     $msg = $_.Exception.Message
     $line = $_.InvocationInfo.ScriptLineNumber
