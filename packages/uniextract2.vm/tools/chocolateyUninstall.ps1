@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Continue'
 Import-Module VM.common -Force -DisableNameChecking
 
-$toolName = 'UniExtract2'
+$toolName = 'UniExtract'
 $category = 'Utilities'
 
 VM-Uninstall $toolName $category
