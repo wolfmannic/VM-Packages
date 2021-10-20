@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Continue'
 # ################################################################################################ #
 # \ \ ---------------------------------------- N O T E ---------------------------------------- / /
 #
-#     Below are general helper functions for any FEVM package to use
+#     Below are general helper functions for any VM package to use
 #
 # ################################################################################################ #
 
@@ -162,7 +162,7 @@ function VM-Install-Packages {
 #>
   param([hashtable] $packages)
   foreach ($pkg in $packages) {
-    $rc = InstallOnePackage $pkg
+    $rc = VM-Install-OnePackage $pkg
     $name = $pkg.name
     if ($rc) {
       # self throttle
@@ -302,12 +302,16 @@ function VM-Write-Log {
   }
 
   $stamp = (Get-Date).toString("yyyy/MM/dd HH:mm:ss")
-  $scriptName = Split-Path -Path $MyInvocation.ScriptName -Leaf
-  if ((!${Env:chocolateyPackageFolder}) -AND (Test-Path env:\"chocolateyPackageFolder")) {
-    $choco_dir = Split-Path -Path ${Env:chocolateyPackageFolder} -Leaf
-    $line = "$stamp [$choco_dir] $scriptName [+] $level : $message"
-  } else {
-    $line = "$stamp $scriptName [+] $level : $message"
+  try {
+    $scriptName = Split-Path -Path $MyInvocation.ScriptName -Leaf
+    if ((!${Env:chocolateyPackageFolder}) -AND (Test-Path env:\"chocolateyPackageFolder")) {
+      $choco_dir = Split-Path -Path ${Env:chocolateyPackageFolder} -Leaf
+      $line = "$stamp [$choco_dir] $scriptName [+] $level : $message"
+    } else {
+      $line = "$stamp $scriptName [+] $level : $message"
+    }
+  } catch {
+    $line = "$stamp [+] $level : $message"
   }
   Add-Content $logfile -Value $line
   Invoke-Expression "Write-Host $line $format"
@@ -422,10 +426,9 @@ function VM-Install-From-Zip {
       checksum64    = $zipSha256_64
       checksumType  = 'sha256'
     }
-
     Install-ChocolateyZipPackage @packageArgs
 
-    if ($zipFolder){
+    if ($zipFolder) {
       $toolDir = Join-Path $toolDir $zipFolder
     }
 

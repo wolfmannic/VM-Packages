@@ -35,7 +35,7 @@ function Set-EnvironmentVariableWrap([string] $key, [string] $value)
 $envVarName = "VM_COMMON_DIR"
 $commonDirPath = [Environment]::GetEnvironmentVariable($envVarName, 2)
 if ((-Not (Test-Path env:\$envVarName)) -Or ($commonDirPath -eq $null)) {
-  $commonDirPath = Join-Path ${Env:ProgramData} "FEVM"
+  $commonDirPath = Join-Path ${Env:ProgramData} "_VM"
   if (-Not (Test-Path $commonDirPath)) {
     New-Item -Path $commonDirPath -ItemType directory -Force | Out-Null
   }
