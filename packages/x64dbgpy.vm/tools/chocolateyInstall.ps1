@@ -10,8 +10,8 @@ try {
   $packageArgs = @{
     packageName   = ${Env:ChocolateyPackageName}
     unzipLocation = $toolDir
-    url           = 'https://ci.appveyor.com/api/buildjobs/r8she167c5eu39f2/artifacts/release.zip'
-    checksum      = '691c92f864c869b5e0aded9691b33e445bfae736a94fe266e788cb80379074db'
+    url           = 'https://github.com/x64dbg/x64dbgpy/releases/download/b275005/x64dbgpy_b275005.zip'
+    checksum      = '62ffbbcf0218c3b833bcb36c2a10671c4501007759a84164b63f09e9f2ce9bfc'
     checksumType  = 'sha256'
   }
   Install-ChocolateyZipPackage @packageArgs
