@@ -11,7 +11,7 @@ $zipSha256_64="be2dc5b9613b72ca44e60b7a1b5332593a868079638ded37cc3ad120e7182b0b"
 
 
 try {
-  executablePath = (VM-Install-From-Zip $toolName $category $zipUrl $zipSha256 $zipUrl_64 $zipSha256_64)[-1]
+  $executablePath = (VM-Install-From-Zip $toolName $category $zipUrl $zipSha256 $zipUrl_64 $zipSha256_64)[-1]
 
   # Chocolatey apends \"1\" to the command, but the \ breaks the command in our case. We need to add it in the correct format.
   Install-ChocolateyExplorerMenuItem -MenuKey "HashMyFiles" -MenuLabel "HashMyFiles" -Command "$executablePath /file `"%1`"" -Type "file"
