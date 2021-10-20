@@ -10,7 +10,7 @@ try {
   VM-Remove-PreviousZipPackage ${Env:chocolateyPackageFolder}
 
   # Download and unzip
-  $url = "https://github.com.vm/flare-fakenet-ng/releases/download/v1.4.11/fakenet1.4.11.zip"
+  $url = "https://github.com/mandiant/flare-fakenet-ng/releases/download/v1.4.11/fakenet1.4.11.zip"
   $checksum = "62af5cce80dbbf5cdf961ec9515549334a2112056d4168fced75c892c24baa95"
   $packageArgs = @{
     packageName   = ${Env:ChocolateyPackageName}
