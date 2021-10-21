@@ -9,7 +9,7 @@ This repository contains the source code for packages supporting the projects be
 * [Commando-VM](https://github.com/mandiant/commando-vm)
 * [ThreatPursuit-VM](https://github.com/mandiant/ThreatPursuit-VM)
 
-> NOTE: The packages themselves do NOT contain any tool binaries, ONLY URL download links.
+> NOTE: Packages do not contain actual software distributions. Packages are PowerShell scripts that only contain instructions for obtaining distributions. See [Chocolatey legal information](https://docs.chocolatey.org/en-us/information/legal) for more details.
 
 ### Package Lifecycle
 Below is a summary of a package's lifecycle from source code to tool installation:
@@ -17,7 +17,7 @@ Below is a summary of a package's lifecycle from source code to tool installatio
 1. Package source code committed
 2. Package built and pushed to MyGet repository
    - A built packages is a `.nupkg` file that's essentially a ZIP file of the package source code
-   - GitHub automation scripts should perform building/pushing to MyGet; however, repo admins may need to manually build/push packages occasionally
+   - GitHub actions will should perform building/pushing to MyGet; however, repo admins may need to manually build/push packages occasionally
 3. User runs installation script for:
    - [FLARE-VM](https://github.com/mandiant/flare-vm)
    - [Commando-VM](https://github.com/mandiant/commando-vm)
