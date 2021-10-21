@@ -16,8 +16,8 @@ Below is a summary of a package's lifecycle from source code to tool installatio
 
 1. Package source code committed
 2. Package built and pushed to MyGet repository
-   - A built packages is a `.nupkg` file that's essentially a ZIP file of the package source code
-   - GitHub actions will should perform building/pushing to MyGet; however, repo admins may need to manually build/push packages occasionally
+   - A built package is a `.nupkg` file that's essentially a ZIP file of the package source code
+   - GitHub actions will perform building/pushing to MyGet; however, repo admins may need to manually build/push packages occasionally
 3. User runs installation script for:
    - [FLARE-VM](https://github.com/mandiant/flare-vm)
    - [Commando-VM](https://github.com/mandiant/commando-vm)
@@ -32,7 +32,7 @@ Below is a summary of a package's lifecycle from source code to tool installatio
 Open-sourcing the package source code provides the community an avenue to both fix broken packages and submit new packages.
 
 ### Additional Benefits: Automation
-Once a package is submitted, our PR hooks will test the package to see if it builds and installs correctly. Additionally, GitHub actions can automatically build and test each package on a daily or weekly basis to check if a package has broken. The awareness of broken packages is a large problem by itself which these actions can alleviate.
+Once a package is submitted, our PR hooks will test the package to see if it builds and installs correctly. Additionally, GitHub actions can automatically build and test each package on a daily or weekly basis to check if a package has broke. The awareness of broken packages is a large problem by itself which these actions can alleviate.
 
 ## How do I Create a Package?
 Please see the Wiki for documentation on how to create a package using our established best practices.
