@@ -15,8 +15,5 @@ try {
   VM-Assert-Path $toolDir
   Get-ChildItem -Include '*.exe' -Path $toolDir -Recurse | %{ New-Item -Path "$_.ignore" -Type File | Out-Null }
 } catch {
-  $msg = $_.Exception.Message
-  $line = $_.InvocationInfo.ScriptLineNumber
-  VM-Write-Log "ERROR" "[Err:$line] $msg"
-  throw
+  VM-Write-Log-Exception $_
 }

@@ -274,37 +274,28 @@ function VM-Set-PinnedApplication {
 function VM-Write-Log {
   [CmdletBinding()]
   Param(
-  [Parameter(Mandatory=$True)]
-  [ValidateSet("INFO","WARN","ERROR","FATAL","DEBUG")]
-  [String]
-  $level,
+    [Parameter(Mandatory=$true, Position=0)]
+    [ValidateSet("INFO","WARN","ERROR","FATAL","DEBUG")]
+    [String] $level,
 
-  [Parameter(Mandatory=$True)]
-  [string]
-  $message
+    [Parameter(Mandatory=$true, Position=1)]
+    [string] $message
   )
-
-  if(($level -eq "ERROR") -Or ($level -eq "FATAL")){
-    $format = "-ForegroundColor Red -BackgroundColor White"
-  } elseif ($level -eq "WARN") {
-    $format = "-ForegroundColor Yellow"
-  } else {
-    $format = ""
-  }
-
+  # Get log file
   $envVarName = "VM_COMMON_DIR"
   $commonDirPath = [Environment]::GetEnvironmentVariable($envVarName, 2)
   $logFile = Join-Path $commonDirPath "log.txt"
 
-  # If it doesn't exist, create it
+  # If log file doesn't exist, create it
   if (-Not (Test-Path $logFile)) {
     New-Item -Path $logFile -ItemType file -Force | Out-Null
   }
 
+  # Log message to file
   $stamp = (Get-Date).toString("yyyy/MM/dd HH:mm:ss")
   try {
     $scriptName = Split-Path -Path $MyInvocation.ScriptName -Leaf
-    if ((!${Env:chocolateyPackageFolder}) -AND (Test-Path env:\"chocolateyPackageFolder")) {
+    if ((${Env:chocolateyPackageFolder}) -AND (Test-Path env:\"chocolateyPackageFolder")) {
       $choco_dir = Split-Path -Path ${Env:chocolateyPackageFolder} -Leaf
       $line = "$stamp [$choco_dir] $scriptName [+] $level : $message"
     } else {
@@ -314,16 +305,22 @@ function VM-Write-Log {
     $line = "$stamp [+] $level : $message"
   }
   Add-Content $logfile -Value $line
-  Invoke-Expression "Write-Host $line $format"
-}
 
+  # Log message to console
+  if (($level -eq "ERROR") -Or ($level -eq "FATAL")) {
+    Write-Host -ForegroundColor Red -BackgroundColor White "$line"
+  } elseif ($level -eq "WARN") {
+    Write-Host -ForegroundColor Yellow "$line"
+  } else {
+    Write-Host "$line"
+  }
+}
 
 function VM-Assert-Path {
   [CmdletBinding()]
   Param(
-    [Parameter(Mandatory=$True)]
-    [String]
-    $path
+    [Parameter(Mandatory=$true)]
+    [String] $path
   )
 
   if (-Not (Test-Path $path)) {
@@ -334,7 +331,7 @@ function VM-Assert-Path {
 }
 
 function VM-Get-DiskSize {
-  $diskdrive = "${env:SystemDrive}"
+  $diskdrive = "${Env:SystemDrive}"
   $driveName = $diskdrive.substring(0, $diskdrive.length-1)
   $disk = Get-PSDrive "$driveName"
   $disksize = (($disk.used + $disk.free)/1GB)
@@ -357,9 +354,8 @@ function VM-Get-FreeSpace {
 function VM-Check-Reboot {
   [CmdletBinding()]
   Param(
-    [Parameter(Mandatory=$True)]
-    [String]
-    $package
+    [Parameter(Mandatory=$true)]
+    [String] $package
   )
   try {
     if (Test-PendingReboot){
@@ -372,11 +368,10 @@ function VM-Check-Reboot {
   }
 }
 
-
 function VM-New-Install-Log {
   [CmdletBinding()]
   Param(
-    [Parameter(Mandatory=$True)]
+    [Parameter(Mandatory=$true)]
     [String] $dir
   )
   VM-Assert-Path $dir
@@ -390,25 +385,26 @@ function VM-New-Install-Log {
 
 # This functions returns $executablePath and $toolDir (outputed by Install-ChocolateyZipPackage)
 function VM-Install-From-Zip {
-    Param
-    (
-         [Parameter(Mandatory=$true, Position=0)]
-         [string] $toolName,
-         [Parameter(Mandatory=$true, Position=1)]
-         [string] $category,
-         [Parameter(Mandatory=$true, Position=2)]
-         [string] $zipUrl,
-         [Parameter(Mandatory=$true, Position=3)]
-         [string] $zipSha256,
-         [Parameter(Mandatory=$false, Position=4)]
-         [string] $zipUrl_64,
-         [Parameter(Mandatory=$false, Position=5)]
-         [string] $zipSha256_64,
-         [Parameter(Mandatory=$false)]
-         [bool] $consoleApp=$false,
-         [Parameter(Mandatory=$false)]
-         [string] $zipFolder # subfolder in zip with the app files
-    )
+  [CmdletBinding()]
+  Param
+  (
+    [Parameter(Mandatory=$true, Position=0)]
+    [string] $toolName,
+    [Parameter(Mandatory=$true, Position=1)]
+    [string] $category,
+    [Parameter(Mandatory=$true, Position=2)]
+    [string] $zipUrl,
+    [Parameter(Mandatory=$true, Position=3)]
+    [string] $zipSha256,
+    [Parameter(Mandatory=$false, Position=4)]
+    [string] $zipUrl_64,
+    [Parameter(Mandatory=$false, Position=5)]
+    [string] $zipSha256_64,
+    [Parameter(Mandatory=$false)]
+    [bool] $consoleApp=$false,
+    [Parameter(Mandatory=$false)]
+    [string] $zipFolder # subfolder in zip with the app files
+  )
   try {
     $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
     $shortcutDir = Join-Path ${Env:TOOL_LIST_DIR} $category
@@ -451,21 +447,18 @@ function VM-Install-From-Zip {
 
     return $executablePath
   } catch {
-    $msg = $_.Exception.Message
-    $line = $_.InvocationInfo.ScriptLineNumber
-    VM-Write-Log "ERROR" "[Err:$line] $msg"
-    throw
+    VM-Write-Log-Exception $_
   }
 }
 
 function VM-Uninstall {
-    Param
-    (
-         [Parameter(Mandatory=$true, Position=0)]
-         [string] $toolName,
-         [Parameter(Mandatory=$true, Position=1)]
-         [string] $category
-    )
+  Param
+  (
+    [Parameter(Mandatory=$true, Position=0)]
+    [string] $toolName,
+    [Parameter(Mandatory=$true, Position=1)]
+    [string] $category
+  )
   $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
   $shortcutDir = Join-Path ${Env:TOOL_LIST_DIR} $category
 
@@ -478,4 +471,16 @@ function VM-Uninstall {
 
   # Uninstall binary
   Uninstall-BinFile -Name $toolName
+}
+
+function VM-Write-Log-Exception {
+  Param
+  (
+    [Parameter(Mandatory=$true)]
+    [System.Management.Automation.ErrorRecord] $error_record
+  )
+  $msg = $error_record.Exception.Message
+  $position_msg = $error_record.InvocationInfo.PositionMessage
+  VM-Write-Log "ERROR" "[ERR] $msg`r`n$position_msg"
+  throw $error_record
 }
