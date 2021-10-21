@@ -8,7 +8,7 @@
 - python2
 - python3
 </description>
-    <authors>Author_TBD</authors>
+    <authors>Mandiant, Microsoft, Python Software Foundation</authors>
     <dependencies>
       <dependency id="common.vm" />
       <dependency id="vcbuildtools.vm" />

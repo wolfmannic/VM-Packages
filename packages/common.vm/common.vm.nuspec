@@ -4,6 +4,6 @@
     <id>common.vm</id>
     <version>3.0.1</version>
     <description>Common libraries for VM-packages</description>
-    <authors>Author_TBD</authors>
+    <authors>Mandiant</authors>
   </metadata>
 </package>

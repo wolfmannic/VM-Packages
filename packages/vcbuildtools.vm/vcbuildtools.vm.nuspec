@@ -7,7 +7,7 @@
 - visualstudio2017buildtools
 - visualstudio2017-workload-vctools
 </description>
-    <authors>Author_TBD</authors>
+    <authors>Mandiant, Microsoft</authors>
     <dependencies>
       <dependency id="common.vm" />
       <dependency id="visualstudio2017buildtools" />
