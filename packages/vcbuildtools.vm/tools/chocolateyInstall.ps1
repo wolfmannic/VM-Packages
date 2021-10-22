@@ -16,8 +16,5 @@ try {
   Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $toolDir
   VM-Assert-Path $shortcut
 } catch {
-  $msg = $_.Exception.Message
-  $line = $_.InvocationInfo.ScriptLineNumber
-  VM-Write-Log "ERROR" "[Err:$line] $msg"
-  throw
+  VM-Write-Log-Exception $_
 }

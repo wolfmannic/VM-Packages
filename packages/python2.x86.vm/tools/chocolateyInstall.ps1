@@ -16,8 +16,5 @@ try {
   Install-ChocolateyPackage @params
   VM-Assert-Path $installDir
 } catch {
-  $msg = $_.Exception.Message
-  $line = $_.InvocationInfo.ScriptLineNumber
-  VM-Write-Log "ERROR" "[Err:$line] $msg"
-  throw
+  VM-Write-Log-Exception $_
 }

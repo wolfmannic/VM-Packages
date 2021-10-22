@@ -21,8 +21,5 @@ try {
   VM-Assert-Path (Join-Path $toolDir 'x64dbgpy_x64.lib')
   VM-Assert-Path (Join-Path $toolDir 'x64dbgpy_x86.lib')
 } catch {
-  $msg = $_.Exception.Message
-  $line = $_.InvocationInfo.ScriptLineNumber
-  VM-Write-Log "ERROR" "[Err:$line] $msg"
-  throw
+  VM-Write-Log-Exception $_
 }

@@ -17,8 +17,5 @@ try {
   Install-ChocolateyExplorerMenuItem -MenuKey "HashMyFiles" -MenuLabel "HashMyFiles" -Command "$executablePath /file `"%1`"" -Type "file" | Out-Null
   Install-ChocolateyExplorerMenuItem -MenuKey "HashMyFiles" -MenuLabel "HashMyFiles" -Command "$executablePath /file `"%1`"" -Type "directory" | Out-Null
 } catch {
-  $msg = $_.Exception.Message
-  $line = $_.InvocationInfo.ScriptLineNumber
-  VM-Write-Log "ERROR" "[Err:$line] $msg"
-  throw
+  VM-Write-Log-Exception $_
 }
