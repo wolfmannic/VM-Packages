@@ -434,8 +434,8 @@ function VM-Install-From-Zip {
 
     if ($consoleApp) {
       $executableCmd  = Join-Path ${Env:WinDir} "system32\cmd.exe"
-      $executableArgs = "/K `"cd ${executableDir} && $toolName --help`""
       $executableDir  = Join-Path ${Env:UserProfile} "Desktop"
+      $executableArgs = "/K `"cd `"$executableDir`" && `"$executablePath`" --help`""
       Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executableCmd -Arguments $executableArgs -WorkingDirectory $executableDir -IconLocation $executablePath
     } else {
       Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executablePath
