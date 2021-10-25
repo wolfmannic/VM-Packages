@@ -46,7 +46,7 @@ Set-Location $built_pkgs_dir
 Write-Host -ForegroundColor Yellow -NoNewline "[INFO]: Install common.vm package? (y/n)"
 $response = Read-Host
 if ($response -eq 'y') {
-  choco install "common.vm" -y -s "'.;https://community.chocolatey.org/api/v2/'"
+  choco upgrade "common.vm" -force -y -s "'.;https://community.chocolatey.org/api/v2/'"
 }
 
 # Ask if we should continue install even if a package fails to install
@@ -56,7 +56,7 @@ $keep_installing_response = Read-Host
 # Install each package
 $built_pkgs = Get-ChildItem $built_pkgs -Recurse -Include *.nupkg | Foreach-Object {( [regex]::match($_.BaseName, '(.*?[.](?:vm)).*').Groups[1].Value)}
 foreach ($package in $built_pkgs) {
-  choco install $package -y -s "'.;https://community.chocolatey.org/api/v2/'"
+  choco upgrade $package -force -y -s "'.;https://community.chocolatey.org/api/v2/'"
   if ($validExitCodes -notcontains $LASTEXITCODE) {
     if ($keep_installing_response -ne 'y') {
       Write-Host -ForegroundColor Red -NoNewline "[WARN]: Install failed. Continue installing other packages? (y/n)"
