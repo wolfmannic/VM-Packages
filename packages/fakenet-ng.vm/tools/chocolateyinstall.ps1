@@ -28,15 +28,14 @@ try {
   $shortcut = Join-Path $shortcutDir "$toolName.lnk"
   $executableCmd  = Join-Path ${Env:WinDir} "system32\cmd.exe"
   $executableDir = Join-Path $toolDir "fakenet1.4.11"
-  $executableArgs = "/K `"cd ${executableDir} && fakenet.exe`""
+  $executableArgs = "/K `"cd `"$executableDir`" && `"$executablePath`"`""
   Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executableCmd -Arguments $executableArgs -WorkingDirectory $executableDir -IconLocation $executablePath -RunAsAdmin
   VM-Assert-Path $shortcut
 
   # Install shim the hard way until this is fixed: https://github.com/chocolatey/choco/issues/1273
-  $launcher = Join-Path $env:ChocolateyInstall "bin\fakenet.exe"
-  $sg = Join-Path $env:ChocolateyInstall 'tools\shimgen.exe'
-  VM-Assert-Path $sg
-  & $sg -o $launcher -p $ExecutableCmd -c "/K 'cd ${executableDir} && fakenet.exe'" | Out-Null
+  $launcher = Join-Path ${Env:ChocolateyInstall} "bin\fakenet.exe"
+  $sg = Join-Path ${Env:ChocolateyInstall} 'tools\shimgen.exe' -Resolve
+  & $sg -o $launcher -p $ExecutableCmd -c "/K 'cd `"$executableDir`" && `"$executablePath`"'" | Out-Null
   VM-Assert-Path $launcher
 
   # Create shortcut to actual tools dir
