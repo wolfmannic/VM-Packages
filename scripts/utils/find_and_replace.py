@@ -48,7 +48,8 @@ def get_script_directory():
 
 
 if __name__ == "__main__":
-  packages_path = os.path.join(os.path.split(get_script_directory())[0], 'packages')
+  root_dir = os.path.dirname(os.path.dirname(get_script_directory()))
+  packages_path = os.path.join(root_dir, 'packages')
   replace_package_content(packages_path, '\.fireeye', '.vm')
   replace_package_content(packages_path, 'FireEye', 'Mandiant')
   replace_package_content(packages_path, 'FE-([a-zA-Z-]*)', r'VM-\1')
