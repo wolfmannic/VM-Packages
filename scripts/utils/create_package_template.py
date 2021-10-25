@@ -106,6 +106,8 @@ def get_script_directory():
 
 
 if __name__ == "__main__":
+  # Example usage:
+  #   python scripts/utils/create_standard_template.py --pkg_name  --version  --authors  --tool_name  --category 
   parser = argparse.ArgumentParser(description="A CLI tool for bulk file downloads based on filemd5.")
   parser.add_argument("--pkg_name", type=str, required=True, help="Package name without suffix (i.e., no '.vm' needed)")
   parser.add_argument("--version", type=str, required=True, help="Tool's version number")
