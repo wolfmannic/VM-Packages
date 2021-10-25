@@ -1,8 +1,5 @@
 $ErrorActionPreference = 'Continue'
-$toolDir = Join-Path ${Env:RAW_TOOLS_DIR} 'OllyDbg2'
-VM-Assert-Path $toolDir
 
-$pluginPath = Join-Path $toolDir 'OllyDumpEx_Od20.dll'
-VM-Assert-Path $pluginPath
-
+$toolDir = Join-Path ${Env:RAW_TOOLS_DIR} 'OllyDbg2' -Resolve
+$pluginPath = Join-Path $toolDir 'OllyDumpEx_Od20.dll' -Resolve
 Remove-Item $pluginPath -Force -ea 0

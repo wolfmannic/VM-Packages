@@ -16,14 +16,9 @@ try {
   Install-ChocolateyZipPackage @packageArgs
 
   # Should unzip to the directory below
-  $toolSrcDir = Join-Path $toolSrcDir 'OllyDumpEx_v1.80'
-  VM-Assert-Path $toolSrcDir
-
-  $pluginSrcPath = Join-Path $toolSrcDir 'OllyDumpEx_X64Dbg.dp32'
-  VM-Assert-Path $pluginSrcPath
-
-  $toolDstDir = Join-Path ${Env:RAW_TOOLS_DIR} 'x64dbg\release\x32'
-  VM-Assert-Path $toolDstDir
+  $toolSrcDir = Join-Path $toolSrcDir 'OllyDumpEx_v1.80' -Resolve
+  $pluginSrcPath = Join-Path $toolSrcDir 'OllyDumpEx_X64Dbg.dp32' -Resolve
+  $toolDstDir = Join-Path ${Env:RAW_TOOLS_DIR} 'x64dbg\release\x32' -Resolve
 
   $toolDstDir = Join-Path $toolDstDir 'plugins'
   if ( -Not (Test-Path $toolDstDir -PathType Container)) {
@@ -36,11 +31,8 @@ try {
   Move-Item -Path $pluginSrcPath -Destination $pluginDstPath -Force -ea 0
   VM-Assert-Path $pluginDstPath
 
-  $pluginSrcPath = Join-Path $toolSrcDir 'OllyDumpEx_X64Dbg.dp64'
-  VM-Assert-Path $pluginSrcPath
-
-  $toolDstDir = Join-Path ${Env:RAW_TOOLS_DIR} 'x64dbg\release\x64'
-  VM-Assert-Path $toolDstDir
+  $pluginSrcPath = Join-Path $toolSrcDir 'OllyDumpEx_X64Dbg.dp64' -Resolve
+  $toolDstDir = Join-Path ${Env:RAW_TOOLS_DIR} 'x64dbg\release\x64' -Resolve
 
   $toolDstDir = Join-Path $toolDstDir 'plugins'
   if ( -Not (Test-Path $toolDstDir -PathType Container)) {

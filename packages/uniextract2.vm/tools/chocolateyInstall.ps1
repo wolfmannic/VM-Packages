@@ -11,8 +11,7 @@ try {
   VM-Install-From-Zip $toolName $category $zipUrl $zipSha256 -zipFolder "UniExtract"
 
   # Make sure all *.exe are not shimmed
-  $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
-  VM-Assert-Path $toolDir
+  $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName -Resolve
   Get-ChildItem -Include '*.exe' -Path $toolDir -Recurse | %{ New-Item -Path "$_.ignore" -Type File | Out-Null }
 } catch {
   VM-Write-Log-Exception $_

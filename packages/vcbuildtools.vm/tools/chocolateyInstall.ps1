@@ -9,9 +9,7 @@ try {
     $programFiles = ${Env:ProgramFiles}
   }
 
-  $toolDir = Join-Path $programFiles 'Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build'
-  VM-Assert-Path $toolDir
-
+  $toolDir = Join-Path $programFiles 'Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build' -Resolve
   $shortcut = Join-Path $shortcutDir 'Microsoft Visual C++ Build Tools.lnk'
   Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $toolDir
   VM-Assert-Path $shortcut

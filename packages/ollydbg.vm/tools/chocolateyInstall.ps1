@@ -18,8 +18,7 @@ try {
   Install-ChocolateyZipPackage @packageArgs
   VM-Assert-Path $toolDir
 
-  $executablePath = Join-Path $toolDir "ollydbg.exe"
-  VM-Assert-Path $executablePath
+  $executablePath = Join-Path $toolDir "ollydbg.exe" -Resolve
 
   $shortcut = Join-Path $shortcutDir "$toolName.lnk"
   Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executablePath -RunAsAdmin

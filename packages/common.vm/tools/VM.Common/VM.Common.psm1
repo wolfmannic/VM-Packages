@@ -423,13 +423,13 @@ function VM-Install-From-Zip {
       checksumType  = 'sha256'
     }
     Install-ChocolateyZipPackage @packageArgs
+    VM-Assert-Path $toolDir
 
     if ($zipFolder) {
-      $toolDir = Join-Path $toolDir $zipFolder
+      $toolDir = Join-Path $toolDir $zipFolder -Resolve
     }
 
-    $executablePath = Join-Path $toolDir "$toolName.exe"
-    VM-Assert-Path (Join-Path $toolDir "$toolName.exe")
+    $executablePath = Join-Path $toolDir "$toolName.exe" -Resolve
     $shortcut = Join-Path $shortcutDir "$toolName.lnk"
 
     if ($consoleApp) {
@@ -440,11 +440,9 @@ function VM-Install-From-Zip {
     } else {
       Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executablePath
     }
-
     VM-Assert-Path $shortcut
 
     Install-BinFile -Name $toolName -Path $executablePath
-
     return $executablePath
   } catch {
     VM-Write-Log-Exception $_

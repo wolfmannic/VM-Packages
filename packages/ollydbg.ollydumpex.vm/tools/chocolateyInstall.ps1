@@ -16,14 +16,9 @@ try {
   Install-ChocolateyZipPackage @packageArgs
 
   # Should unzip to the directory below
-  $toolSrcDir = Join-Path $toolSrcDir 'OllyDumpEx_v1.80'
-  VM-Assert-Path $toolSrcDir
-
-  $pluginSrcPath = Join-Path $toolSrcDir 'OllyDumpEx_Od11.dll'
-  VM-Assert-Path $pluginSrcPath
-
-  $toolDstDir = Join-Path ${Env:RAW_TOOLS_DIR} 'OllyDbg'
-  VM-Assert-Path $toolDstDir
+  $toolSrcDir = Join-Path $toolSrcDir 'OllyDumpEx_v1.80' -Resolve
+  $pluginSrcPath = Join-Path $toolSrcDir 'OllyDumpEx_Od11.dll' -Resolve
+  $toolDstDir = Join-Path ${Env:RAW_TOOLS_DIR} 'OllyDbg' -Resolve
 
   # Move correct plugin into the tool directory
   $pluginDstPath = Join-Path $toolDstDir $pluginFile

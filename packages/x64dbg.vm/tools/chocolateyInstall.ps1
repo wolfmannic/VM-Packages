@@ -19,18 +19,14 @@ try {
   Install-ChocolateyZipPackage @packageArgs
   VM-Assert-Path $toolDir
 
-  $executablePath = Join-Path $toolDir "release\x32\x32dbg.exe"
-  VM-Assert-Path $executablePath
-
+  $executablePath = Join-Path $toolDir "release\x32\x32dbg.exe" -Resolve
   $shortcut = Join-Path $shortcutDir "x32dbg.lnk"
   Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executablePath -RunAsAdmin
   VM-Assert-Path $shortcut
 
   Install-BinFile -Name 'x32dbg' -Path $executablePath
 
-  $executablePath = Join-Path $toolDir "release\x64\x64dbg.exe"
-  VM-Assert-Path $executablePath
-
+  $executablePath = Join-Path $toolDir "release\x64\x64dbg.exe" -Resolve
   $shortcut = Join-Path $shortcutDir "x64dbg.lnk"
   Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executablePath -RunAsAdmin
   VM-Assert-Path $shortcut

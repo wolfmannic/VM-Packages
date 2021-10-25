@@ -5,8 +5,7 @@ try {
   $toolName = 'cmder'
   $shortcutDir = Join-Path ${Env:TOOL_LIST_DIR} 'Utilities'
 
-  $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
-  VM-Assert-Path $toolDir
+  $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName -Resolve
 
   #### Change default ls alias to deconflict with unxUtils package ####
   # https://github.com/cmderdev/cmder/issues/743
@@ -31,8 +30,7 @@ cmderr=cd /d "%CMDER_ROOT%"
   New-Item -ItemType File -Path $cmderaliases -Force | Out-Null
   Set-Content -Path $cmderaliases -Value $content
 
-  $executablePath = Join-Path $toolDir 'cmder.exe'
-  VM-Assert-Path $executablePath
+  $executablePath = Join-Path $toolDir 'cmder.exe' -Resolve
 
   $shortcut = Join-Path $shortcutDir "$toolName.lnk"
   Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $executablePath

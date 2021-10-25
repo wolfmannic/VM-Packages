@@ -4,8 +4,7 @@ Import-Module VM.common -Force -DisableNameChecking
 try {
   VM-Remove-PreviousZipPackage ${Env:chocolateyPackageFolder}
 
-  $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} 'x64dbg\release'
-  VM-Assert-Path $toolDir
+  $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} 'x64dbg\release' -Resolve
 
   $packageArgs = @{
     packageName   = ${Env:ChocolateyPackageName}
@@ -17,9 +16,9 @@ try {
   Install-ChocolateyZipPackage @packageArgs
 
   # Check for a few expected files to ensure installation succeeded
-  VM-Assert-Path (Join-Path $toolDir 'x64dbgpy.h')
-  VM-Assert-Path (Join-Path $toolDir 'x64dbgpy_x64.lib')
-  VM-Assert-Path (Join-Path $toolDir 'x64dbgpy_x86.lib')
+  Join-Path $toolDir 'x64dbgpy.h' -Resolve | Out-Null
+  Join-Path $toolDir 'x64dbgpy_x64.lib' -Resolve | Out-Null
+  Join-Path $toolDir 'x64dbgpy_x86.lib' -Resolve | Out-Null
 } catch {
   VM-Write-Log-Exception $_
 }

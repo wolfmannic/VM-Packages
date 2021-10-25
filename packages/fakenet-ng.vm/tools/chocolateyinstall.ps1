@@ -21,8 +21,7 @@ try {
   }
   Install-ChocolateyZipPackage @packageArgs
 
-  $executablePath = Join-Path $toolDir "fakenet1.4.11\fakenet.exe"
-  VM-Assert-Path $executablePath
+  $executablePath = Join-Path $toolDir "fakenet1.4.11\fakenet.exe" -Resolve
 
   # Create shortcut file
   $shortcut = Join-Path $shortcutDir "$toolName.lnk"
