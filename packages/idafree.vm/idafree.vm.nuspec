@@ -4,7 +4,7 @@
     <id>idafree.vm</id>
     <version>7.6</version>
     <authors>hex-rays</authors>
-    <description>IDA is the Interactive DisAssembler: the world's smartest and most feature-full disassembler, which many software security specialists are familiar with.</description>
+    <description>Free version of IDA, a powerful Interactive DisAssembler and debugger</description>
     <dependencies>
       <dependency id="common.vm" />
     </dependencies>
