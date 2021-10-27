@@ -1,4 +1,5 @@
-$ErrorActionPreference = 'Continue'
+# Setting this to "Stop". Functions should properly handle errors or throw to calling function.
+$ErrorActionPreference = 'Stop'
 
 
 # ################################################################################################ #
@@ -187,10 +188,11 @@ function VM-Remove-PreviousZipPackage {
   [OPTIONAL] A wildcard expression for a file type containing a list of files to delete.
 #>
   param(
+    [Parameter(Mandatory=$true, Position=0)]
     [string] $packagePath,
+    [Parameter(Mandatory=$false)]
     [string] $expression=$null
   )
-
   if ($expression) {
     $previousZipFiles = Get-ChildItem -Path (Join-Path $packagePath $expression)
   } else {
@@ -199,10 +201,12 @@ function VM-Remove-PreviousZipPackage {
 
   foreach ($zipFileName in $previousZipFiles) {
     if ((Test-Path -Path $zipFileName)) {
-      $zipContents = Get-Content $zipFileName -Force
-      foreach ($fileInZip in $zipContents) {
-        if ($fileInZip -ne $null -and $fileInZip.Trim() -ne '' -and (Test-Path "$fileInZip")) {
-          Remove-Item -Path "$fileInZip" -ErrorAction SilentlyContinue -Recurse -Force
+      $zipContents = @(Get-Content $zipFileName -Force)
+      if ($zipContents) {
+        foreach ($fileInZip in $zipContents) {
+          if (($null -ne $fileInZip) -AND ($fileInZip.Trim() -ne '') -AND (Test-Path $fileInZip)) {
+            Remove-Item -Path $fileInZip -Recurse -Force -ea 0
+          }
         }
       }
     }
@@ -403,7 +407,7 @@ function VM-Install-From-Zip {
     [Parameter(Mandatory=$false)]
     [bool] $consoleApp=$false,
     [Parameter(Mandatory=$false)]
-    [string] $zipFolder # subfolder in zip with the app files
+    [bool] $innerFolder=$false # subfolder in zip with the app files
   )
   try {
     $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
@@ -412,21 +416,42 @@ function VM-Install-From-Zip {
     # Remove files from previous zips for upgrade
     VM-Remove-PreviousZipPackage ${Env:chocolateyPackageFolder}
 
+    # Snapshot all folders in $toolDir
+    $oldDirList = @()
+    if (Test-Path $toolDir) {
+      $oldDirList = @(Get-ChildItem $toolDir | Where-Object {$_.PSIsContainer})
+    }
+
     # Download and unzip
     $packageArgs = @{
-      packageName   = ${Env:ChocolateyPackageName}
-      unzipLocation = $toolDir
-      url           = $zipUrl
-      checksum      = $zipSha256
-      url64bit      = $zipUrl_64
-      checksum64    = $zipSha256_64
-      checksumType  = 'sha256'
+      packageName    = ${Env:ChocolateyPackageName}
+      unzipLocation  = $toolDir
+      url            = $zipUrl
+      checksum       = $zipSha256
+      checksumType   = 'sha256'
+      url64bit       = $zipUrl_64
+      checksum64     = $zipSha256_64
     }
     Install-ChocolateyZipPackage @packageArgs
     VM-Assert-Path $toolDir
 
-    if ($zipFolder) {
-      $toolDir = Join-Path $toolDir $zipFolder -Resolve
+    # Diff and find new folders in $toolDir
+    $newDirList = @(Get-ChildItem $toolDir | Where-Object {$_.PSIsContainer})
+    $diffDirs = Compare-Object -ReferenceObject $oldDirList -DifferenceObject $newDirList -PassThru
+
+    # If $innerFolder is set to $true, after unzipping only a single folder should be new.
+    # GitHub ZIP files typically unzip to a single folder that contains the tools.
+    if ($innerFolder) {
+      # First time install, use the single resulting folder name from Install-ChocolateyZipPackage.
+      if ($diffDirs.Count -eq 1) {
+        # Save the "new tool directory" to assist with upgrading.
+        $newToolDir = Join-Path $toolDir $diffDirs[0].Name -Resolve
+        Set-Content (Join-Path ${Env:chocolateyPackageFolder} "innerFolder.txt") $newToolDir
+        $toolDir = $newToolDir
+      } else {
+        # On upgrade there may be no new directory, in this case retrieve previous "new tool directory" from saved file.
+        $toolDir = Get-Content (Join-Path ${Env:chocolateyPackageFolder} "innerFolder.txt")
+      }
     }
 
     $executablePath = Join-Path $toolDir "$toolName.exe" -Resolve
@@ -481,4 +506,77 @@ function VM-Write-Log-Exception {
   $position_msg = $error_record.InvocationInfo.PositionMessage
   VM-Write-Log "ERROR" "[ERR] $msg`r`n$position_msg"
   throw $error_record
+}
+
+function VM-Add-To-Right-Click-Menu {
+  Param
+  (
+    [Parameter(Mandatory=$true, Position=0)]
+    [String] $menuKey, # name of registry key
+    [Parameter(Mandatory=$true, Position=1)]
+    [string] $menuLabel, # value displayed in right-click menu
+    [Parameter(Mandatory=$true, Position=2)]
+    [string] $command,
+    [Parameter(Mandatory=$true, Position=3)]
+    [ValidateSet("file", "directory")]
+    [string] $type
+  )
+  try {
+    # Determine if file or directory should show item in right-click menu
+    if ($type -eq "file") {
+      $key = "*"
+    } else {
+      $key = "directory"
+    }
+
+    # Check and map "HKCR" to correct drive
+    if (-NOT (Test-Path -path 'HKCR:')) {
+      New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+    }
+
+    # Add right-click menu display name
+    if (-NOT (Test-Path -LiteralPath "HKCR:\$key\shell\$menuKey")) {
+      New-Item -Path "HKCR:\$key\shell\$menuKey" | Out-Null
+    }
+    Set-ItemProperty -LiteralPath "HKCR:\$key\shell\$menuKey" -Name '(Default)' -Value "$menuLabel" -Type String
+
+    # Add command to run when executed from right-click menu
+    if(-NOT (Test-Path -LiteralPath "HKCR:\$key\shell\$menuKey\command")) {
+      New-Item -Path "HKCR:\$key\shell\$menuKey\command" | Out-Null
+    }
+    Set-ItemProperty -LiteralPath "HKCR:\$key\shell\$menuKey\command" -Name '(Default)' -Value $command -Type String
+  } catch {
+    FE-Write-Log "ERROR" "Failed to add $menuKey to right-click menu"
+  }
+}
+
+function VM-Remove-From-Right-Click-Menu {
+  Param
+  (
+    [Parameter(Mandatory=$true, Position=0)]
+    [String] $menuKey, # name of registry key
+    [Parameter(Mandatory=$true, Position=1)]
+    [ValidateSet("file", "directory")]
+    [string] $type
+  )
+  try {
+    # Determine if file or directory should show item in right-click menu
+    if ($type -eq "file") {
+      $key = "*"
+    } else {
+      $key = "directory"
+    }
+
+    # Check and map "HKCR" to correct drive
+    if (-NOT (Test-Path -path 'HKCR:')) {
+      New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+    }
+
+    # Remove right-click menu settings from registry
+    if (Test-Path -LiteralPath "HKCR:\$key\shell\$menuKey") {
+      Remove-Item -LiteralPath "HKCR:\$key\shell\$menuKey" -Recurse
+    }
+  } catch {
+    FE-Write-Log "ERROR" "Failed to remove $menuKey from right-click menu"
+  }
 }
