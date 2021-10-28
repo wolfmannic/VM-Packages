@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Continue'
-Import-Module VM.common -Force -DisableNameChecking
+Import-Module vm.common -Force -DisableNameChecking
 
 try {
   $toolName = 'FakeNet-NG'

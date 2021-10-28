@@ -53,7 +53,7 @@ if __name__ == "__main__":
   replace_package_content(packages_path, '\.fireeye', '.vm')
   replace_package_content(packages_path, 'FireEye', 'Mandiant')
   replace_package_content(packages_path, 'FE-([a-zA-Z-]*)', r'VM-\1')
-  replace_package_content(packages_path, 'FireEyeVM.common', 'VM.common')
+  replace_package_content(packages_path, 'FireEyeVM.common', 'vm.common')
   replace_package_content(packages_path, 'github\.com/fireeye', 'github.com/mandiant')
   replace_filepaths(packages_path, '(.*?).fireeye.nuspec', r'\1.vm.nuspec')
   replace_dirpaths(packages_path, '(.*?).fireeye', r'\1.vm')

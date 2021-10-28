@@ -10,10 +10,10 @@ We use environment variables to specify where certain items should be located. S
 The environment variable below is NOT currently configurable by the user:
 - `VM_COMMON_DIR`
   - Default Path:
-    - *`%PROGRAMDATA%`*`\VM.Common`
+    - *`%PROGRAMDATA%`*`\vm.common`
   - Use:
     - VM common directory. Can contain anything related to VM-packages.
-    - Used to store `VM.Common.psm1`
+    - Used to store `vm.common.psm1`
 
 ### User Configurable
 The environment variables below are configurable by the user:

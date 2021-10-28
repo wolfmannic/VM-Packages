@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Continue'
 Import-Module vm.common -Force -DisableNameChecking
 
-$toolName = 'FLOSS'
+$toolName = 'UniExtract'
 $category = 'Utilities'
 
 VM-Uninstall $toolName $category

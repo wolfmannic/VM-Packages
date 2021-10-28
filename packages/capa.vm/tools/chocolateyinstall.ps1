@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-Import-Module VM.common -Force -DisableNameChecking
+Import-Module vm.common -Force -DisableNameChecking
 
 $toolName = 'capa'
 $category = 'Utilities'

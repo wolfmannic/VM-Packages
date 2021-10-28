@@ -1,7 +1,8 @@
 $ErrorActionPreference = 'Continue'
 Import-Module vm.common -Force -DisableNameChecking
 
-$toolName = 'FLOSS'
-$category = 'Utilities'
+$toolName = 'BloodHound'
+$category = 'Information Gathering'
 
 VM-Uninstall $toolName $category
+
