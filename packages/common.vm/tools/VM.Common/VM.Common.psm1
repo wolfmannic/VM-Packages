@@ -388,6 +388,91 @@ function VM-New-Install-Log {
 }
 
 # This functions returns $executablePath and $toolDir (outputed by Install-ChocolateyZipPackage)
+function VM-Install-Raw-GitHub-Repo {
+  [CmdletBinding()]
+  Param
+  (
+    [Parameter(Mandatory=$true, Position=0)]
+    [string] $toolName,
+    [Parameter(Mandatory=$true, Position=1)]
+    [string] $category,
+    [Parameter(Mandatory=$true, Position=2)]
+    [string] $zipUrl,
+    [Parameter(Mandatory=$true, Position=3)]
+    [string] $zipSha256,
+    # Examples:
+    # $powershellScript = "Get-Content README.md"
+    # $powershellScript = "Import-Module module.ps1; Get-Help Main-Function"
+    [Parameter(Mandatory=$false)]
+    [string] $powershellScript
+  )
+  try {
+    $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
+    $shortcutDir = Join-Path ${Env:TOOL_LIST_DIR} $category
+
+    # Remove files from previous zips for upgrade
+    VM-Remove-PreviousZipPackage ${Env:chocolateyPackageFolder}
+
+    # Create a temp directory to download zip
+    $tempDownloadDir = Join-Path ${Env:chocolateyPackageFolder} "temp_$([guid]::NewGuid())"
+
+    # Download and unzip
+    $packageArgs = @{
+      packageName    = ${Env:ChocolateyPackageName}
+      unzipLocation  = $tempDownloadDir
+      url            = $zipUrl
+      checksum       = $zipSha256
+      checksumType   = 'sha256'
+    }
+    Install-ChocolateyZipPackage @packageArgs | Out-Null
+    VM-Assert-Path $tempDownloadDir
+
+    # Make sure our tool directory exists
+    if (-Not (Test-Path $toolDir)) {
+      New-Item -Path $toolDir -ItemType Directory -Force | Out-Null
+    }
+
+    # Get the unzipped directory
+    $unzippedDir = (Get-ChildItem -Directory $tempDownloadDir | Where-Object {$_.PSIsContainer} | Select-Object -f 1).FullName
+
+    # Copy all the items in the unzipped directory to their correct directory
+    Get-ChildItem -Path $unzippedDir | Move-Item -Destination $toolDir -Force -ea 0
+
+    # Sleep to help prevent file system race conditions
+    Start-Sleep -Milliseconds 500
+
+    # Rename all entries in to where the files were actually copied
+    $zip_name = Join-Path ${Env:chocolateyPackageFolder} ((Split-Path $unzippedDir -Leaf) + ".zip.txt")
+    (Get-Content $zip_name) | Foreach-Object {$_.Replace($unzippedDir, $toolDir)} | Set-Content $zip_name
+
+    # Remove first line of *.zip.txt file so we don't delete the entire directory on upgrade
+    (Get-Content $zip_name | Select-Object -Skip 1) | Set-Content $zip_name
+
+    # Sleep to help prevent file system race conditions
+    Start-Sleep -Milliseconds 500
+
+    # Remove temporary directory
+    Remove-Item $tempDownloadDir -Recurse -Force
+
+    if ($powershellScript) {
+      $executableArgs = "-ExecutionPolicy Bypass -NoExit -Command $powershellScript"
+      $powershellPath = Join-Path "${Env:WinDir}\system32\WindowsPowerShell\v1.0" "powershell.exe" -Resolve
+      $shortcut = Join-Path $shortcutDir "$toolName.lnk"
+      Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $powershellPath -Arguments $executableArgs -WorkingDirectory $toolDir -IconLocation $powershell
+      VM-Assert-Path $shortcut
+    } else {
+      $shortcut = Join-Path $shortcutDir "$toolName.lnk"
+      Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $toolDir
+      VM-Assert-Path $shortcut
+    }
+
+    return $toolDir
+  } catch {
+    VM-Write-Log-Exception $_
+  }
+}
+
+# This functions returns $executablePath and $toolDir (outputed by Install-ChocolateyZipPackage)
 function VM-Install-From-Zip {
   [CmdletBinding()]
   Param
