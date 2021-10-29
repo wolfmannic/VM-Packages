@@ -56,6 +56,9 @@ $keep_installing_response = Read-Host
 # Install each package
 $built_pkgs = Get-ChildItem $built_pkgs -Recurse -Include *.nupkg | Foreach-Object {( [regex]::match($_.BaseName, '(.*?[.](?:vm)).*').Groups[1].Value)}
 foreach ($package in $built_pkgs) {
+  if ($package -LIKE "common.vm") {
+    continue
+  }
   choco upgrade $package -force -y -s "'.;https://community.chocolatey.org/api/v2/'"
   if ($validExitCodes -notcontains $LASTEXITCODE) {
     if ($keep_installing_response -ne 'y') {

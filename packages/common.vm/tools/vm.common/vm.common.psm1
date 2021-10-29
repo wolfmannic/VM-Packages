@@ -451,8 +451,8 @@ function VM-Install-Raw-GitHub-Repo {
     # Sleep to help prevent file system race conditions
     Start-Sleep -Milliseconds 500
 
-    # Remove temporary directory
-    Remove-Item $tempDownloadDir -Recurse -Force
+    # Attempt to remove temporary directory
+    Remove-Item $tempDownloadDir -Recurse -Force -ea 0
 
     if ($powershellCommand) {
       $executableArgs = "-ExecutionPolicy Bypass -NoExit -Command $powershellCommand"
