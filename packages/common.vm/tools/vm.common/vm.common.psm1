@@ -459,12 +459,11 @@ function VM-Install-Raw-GitHub-Repo {
       $powershellPath = Join-Path "${Env:WinDir}\system32\WindowsPowerShell\v1.0" "powershell.exe" -Resolve
       $shortcut = Join-Path $shortcutDir "$toolName.lnk"
       Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $powershellPath -Arguments $executableArgs -WorkingDirectory $toolDir -IconLocation $powershell
-      VM-Assert-Path $shortcut
     } else {
       $shortcut = Join-Path $shortcutDir "$toolName.lnk"
       Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $toolDir
-      VM-Assert-Path $shortcut
     }
+    VM-Assert-Path $shortcut
 
     return $toolDir
   } catch {
