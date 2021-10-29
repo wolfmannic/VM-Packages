@@ -401,10 +401,10 @@ function VM-Install-Raw-GitHub-Repo {
     [Parameter(Mandatory=$true, Position=3)]
     [string] $zipSha256,
     # Examples:
-    # $powershellScript = "Get-Content README.md"
-    # $powershellScript = "Import-Module module.ps1; Get-Help Main-Function"
+    # $powershellCommand = "Get-Content README.md"
+    # $powershellCommand = "Import-Module module.ps1; Get-Help Main-Function"
     [Parameter(Mandatory=$false)]
-    [string] $powershellScript
+    [string] $powershellCommand
   )
   try {
     $toolDir = Join-Path ${Env:RAW_TOOLS_DIR} $toolName
@@ -454,8 +454,8 @@ function VM-Install-Raw-GitHub-Repo {
     # Remove temporary directory
     Remove-Item $tempDownloadDir -Recurse -Force
 
-    if ($powershellScript) {
-      $executableArgs = "-ExecutionPolicy Bypass -NoExit -Command $powershellScript"
+    if ($powershellCommand) {
+      $executableArgs = "-ExecutionPolicy Bypass -NoExit -Command $powershellCommand"
       $powershellPath = Join-Path "${Env:WinDir}\system32\WindowsPowerShell\v1.0" "powershell.exe" -Resolve
       $shortcut = Join-Path $shortcutDir "$toolName.lnk"
       Install-ChocolateyShortcut -shortcutFilePath $shortcut -targetPath $powershellPath -Arguments $executableArgs -WorkingDirectory $toolDir -IconLocation $powershell
