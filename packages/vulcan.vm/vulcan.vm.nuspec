@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>vulcan.vm</id>
+    <version>0.0.0.20220705</version>
+    <authors>praetorian-inc</authors>
+    <description>a tool to make it easy and fast to test various forms of injection</description>
+    <dependencies>
+      <dependency id="common.vm" />
+    </dependencies>
+  </metadata>
+</package>
