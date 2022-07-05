@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>watson.vm</id>
+    <version>0.0.0.20220705</version>
+    <authors>rastamouse</authors>
+    <description>Enumerate missing KBs and suggest exploits for useful Privilege Escalation vulnerabilities</description>
+    <dependencies>
+      <dependency id="common.vm" />
+    </dependencies>
+  </metadata>
+</package>
