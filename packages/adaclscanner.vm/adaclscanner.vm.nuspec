@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>adaclscanner.vm</id>
+    <version>6.8.0</version>
+    <authors>can1x</authors>
+    <description>Repo for ADACLScan.ps1 - Your number one script for ACL's in Active Directory</description>
+    <dependencies>
+      <dependency id="common.vm" />
+    </dependencies>
+  </metadata>
+</package>
