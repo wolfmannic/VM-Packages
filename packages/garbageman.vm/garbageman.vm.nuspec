@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>garbageman.vm</id>
+    <version>0.2.4</version>
+    <authors>alphillips-lab</authors>
+    <description>A set of tools designed for .NET heap analysis. These tools offer the following benefits for malware researchers: Ability to extract clear-text; payload (PE Images etc.) from .NET heaps quickly; Easy analysis of encrypted network protocols, signs of data exfiltration, and similar; Ability to overcome malware anti-dumping techniques (psnotify)</description>
+    <dependencies>
+      <dependency id="common.vm" />
+    </dependencies>
+  </metadata>
+</package>
