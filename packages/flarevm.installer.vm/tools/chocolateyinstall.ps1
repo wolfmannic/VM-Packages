@@ -60,7 +60,7 @@ try {
         }
     }
 
-    $installedPackages = chocolatey list -l -r -all | Out-String
+    $installedPackages = choco list -l -r -all | Out-String
     VM-Write-Log "INFO" "Packages installed:`n$installedPackages"
 
     # Write each failed package to failure file
